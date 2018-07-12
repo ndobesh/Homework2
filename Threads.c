@@ -1,14 +1,15 @@
 #include <pthread.h>
+#include <stdio.h>
 pthread_t threads[8];
 // Protect critical areas from getting clobbered
-pthread_mutex_t lock = PTHREAD_MUTEXT_INITIALIAZER;
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 void *myFunc(void *thread);
 
 double calculatedPi = 1.0;
 
 int main(){
-    int i = 0
+    int i = 0;
     /* Thread creation */
     for(i = 0; i < 8; i++){
         pthread_create(&threads[i], NULL, myFunc, (void *) i);
