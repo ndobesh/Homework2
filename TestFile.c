@@ -28,6 +28,12 @@ void* pi_function() {
 int main(void) {
     // pi_function();
 
+
+    //TODO: Create a for loop for multiple threads
+    //TODO: Make an array of 8 threads
+    //TODO: Make an overlapping for loop in pi_function that increases the starting value
+    //TODO: Create variable that will increment in loop to be passed into pi_function
+
     pthread_t tid;
     pthread_create(&tid, NULL, pi_function, NULL);
     pthread_join(tid, NULL);
