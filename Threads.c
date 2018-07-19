@@ -1,17 +1,20 @@
+/*
 #include <pthread.h>
 #include <stdio.h>
 pthread_t threads[8];
 // Protect critical areas from getting clobbered
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
-void *myFunc(void *thread);
+void *pi_runner(void* thread);
 double getPI();
 
 double calculatedPi = 1.0; //Global variable to hold grand total for Pi
 
 int main(){
     int i = 0;
-    /* Thread creation */
+    */
+/* Thread creation *//*
+
     for(i = 0; i < 8; i++){
         pthread_create(&threads[i], NULL, myFunc, (void *) i);
         void *myFunc(void *thread);
@@ -22,7 +25,7 @@ int main(){
     }
 }
 
-void *myFunc(void *thread){
+void *pi_runner(void *thread){
     int threadNo = (int) thread;
     pthread_mutex_lock(&lock);
     // Loop 25,000 times
@@ -42,4 +45,4 @@ double getPI() {
         pi = pi * ((p=i)/(i-1))*(p/(i+1));
     }
     return pi;
-}
+}*/
