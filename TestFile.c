@@ -1,4 +1,3 @@
-/*
 // Most of the code format came from this YouTube video:
 // https://www.youtube.com/watch?v=GXXE42bkqQk&t=1s
 
@@ -10,29 +9,39 @@
 double piSum = 1;
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // Initialize the mutex functionality
 
-*/
 /*struct pi_function_struct {
     int start;
     double piSum;
-};*//*
-
+};*/
 
 //Pi formula came from: https://github.com/aureleoules/Pi-WallisProduct/blob/master/main.cpp
-void *pi_function(void* arg) {
+void *pi_function(void *arg) {
 
 //    struct pi_function_struct *arg_struct = (struct pi_function_struct*) arg;
-
-    double p, pi = 2.0;
-    for (int i = 2; i <= NUM_LOOPS; i += 2) { //25,000 is the precision of the Pi value
-        pi = pi * ((p = i) / (i - 1));
-        pi = pi * (p / (i + 1)); //Formula for WillisProduct
+    int *thread_ptr = (int*) arg;
+    int thread_num = *thread_ptr;
+    double pi = 2.0;
+    double numerator = 2;
+    double denominator = 1;
+    for (int i = thread_num; i <= NUM_LOOPS; i+=7){
+        //for (int j = 2; j <= NUM_LOOPS; j += 2) { //25,000 is the precision of the Pi value
+        if (i % 2 == 0){
+            numerator += 2;
+        }
+        if (i % 2 != 0){
+            denominator +=2;
+        }
+        pi = pi * ((numerator) / (denominator));
+        //           pi = pi * (p / (i + 1)); //Formula for WillisProduct
         pthread_mutex_lock(&mutex); // Locks the variable in the critical section so multiple threads access
-                                    // them at the same time.
+        // them at the same time.
 
         piSum = pi; // Send the result of WillisProduct to the global variable.
 
         pthread_mutex_unlock(&mutex);
+        //}
     }
+
     pthread_exit(NULL); // States that the work of the thread is complete.
 
 }
@@ -45,7 +54,7 @@ int main(void) {
     int num_threads = 8; // The number of threads  to execute WillisProduct
     pthread_t tids[num_threads]; // The creation of the array of thread objects.
     for (int i = 0; i < num_threads; i++) { // Create 8 threads to execute the WillisProduct
-        pthread_create(&tids[i], NULL, pi_function, NULL);
+        pthread_create(&tids[i], NULL, pi_function, &i);
     }
     for (int i = 0; i < num_threads; i++) { // Wait for each thread to complete
         pthread_join(tids[i], NULL);
@@ -58,4 +67,3 @@ int main(void) {
     printf("This is off by about %.14f\n", pi_diff); // Difference between actual Pi value and result of WillisProduct
     return 0;
 }
-*/
